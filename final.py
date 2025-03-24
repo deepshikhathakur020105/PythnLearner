@@ -319,22 +319,50 @@ class PythonLearningTool:
 
         problem, _, _ = self.problems[self.current_problem_index]
         test_data = test_cases.get(problem, [])
-        function_name = user_code.split("(")[0].split()[-1]  # Extract function name
+
+        function_name = None
+        for line in user_code.split("\n"):
+            if line.strip().startswith("def "):  # Find the function definition line
+                function_name = line.split("(")[0].split()[1]  # Extract function name
+                break
+
+        if not function_name:
+            messagebox.showerror("Error", "No function definition found!")
+            return
+
+        local_scope = {}
         
         try:
-            exec(user_code, globals())  # Execute user code
-            for inputs, expected in test_data:
-                result = eval(f"{function_name}({', '.join(map(str, inputs))})")
-                if result != expected:
-                    raise ValueError(f"Test case failed for input {inputs}. Expected {expected}, got {result}")
-            self.correct_count += 1  # Increment only if all test cases pass
-            messagebox.showinfo("Success", "All test cases passed! 🎉")
+            exec(user_code, {}, local_scope)  # Execute user code in isolated scope
+            func = local_scope.get(function_name)
+
+            if not func:
+                messagebox.showerror("Error", f"Function {function_name} is not defined.")
+                return
+
+            # Run test cases
+            correct = True
+            for case in test_data:
+                *inputs, expected_output = case  
+                try:
+                    result = func(*inputs)  # Dynamically unpack function arguments
+                    if result != expected_output:
+                        correct = False
+                        messagebox.showerror("Incorrect", f"Test failed for input {inputs}. Expected: {expected_output}, Got: {result}")
+                        break  # Stop at first failure
+                except Exception as e:
+                    messagebox.showerror("Error", f"Error while testing: {e}")
+                    correct = False
+                    break
+
+            if correct:
+                self.correct_count += 1
+                messagebox.showinfo("Success", "All test cases passed! ✅")
+
         except Exception as e:
-            messagebox.showerror("Error", f"Your code failed: {e}")
+            messagebox.showerror("Error", f"Code execution failed: {e}")
 
-        # Update progress label
         self.progress_label.config(text=f"Solved: {self.solved_count} | Correct: {self.correct_count}")
-
 
     def clear_frame(self):
         for widget in self.root.winfo_children():
@@ -350,6 +378,7 @@ class PythonLearningTool:
     
 if __name__ == "__main__":
     root = tk.Tk()
+    
     try:
         root.iconbitmap("icon.ico")
     except tk.TclError:
