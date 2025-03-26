@@ -72,7 +72,15 @@ To distribute your application as a **Windows executable**, you can use **Inno S
 
 5. **Distribute the Installer**
    - The generated `.exe` installer can be shared for easy installation.
+## Installation
 
+1. **Download the Setup**
+
+   [![Download Setup](https://img.shields.io/badge/Download-Setup-green?style=for-the-badge)](<YOUR_DOWNLOAD_LINK>)
+
+2. **Extract and Run**
+   - Extract the downloaded file.
+   - Run `setup.exe` (Windows) or `python main.py` (for manual execution).
 
 ## License
 This project is licensed under the MIT License.
