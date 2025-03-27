@@ -76,7 +76,7 @@ To distribute your application as a **Windows executable**, you can use **Inno S
 
 1. **Download the Setup**
 
-   [![Download Setup](https://img.shields.io/badge/Download-Setup-green?style=for-the-badge)](<https://drive.google.com/file/d/1jl-Qcjgxj8hZ7sm4k7BKL2GpqwmObRMT/view?usp=drive_link>)
+   [![Download Setup](https://img.shields.io/badge/Download-Setup-green?style=for-the-badge)](<https://drive.google.com/file/d/1U9rmND9KIuibKjxQyjkQEVICRbPngZsL/view?usp=sharing>)
 
 2. **Extract and Run**
    - Extract the downloaded file.
